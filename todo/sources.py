@@ -1,0 +1,56 @@
+"""TODO sources."""
+from __future__ import annotations
+import requests
+from typing import Iterable
+from abc import ABC, abstractmethod
+
+
+class Task:
+    """Task impl."""
+
+    def __init__(self, source: Source, title: str) -> None:
+        """Save task info."""
+        self._source = source
+        self.title = title
+
+    def remove(self) -> None:
+        """Remove self."""
+        self._source.remove_task(self)
+
+
+class Source(ABC):
+    """A source of TODOs."""
+
+    @abstractmethod
+    def fetch(self) -> Iterable[Task]:
+        """Fetch tasks."""
+
+    @abstractmethod
+    def remove_task(self, task: Task) -> None:
+        """Remove task from todo."""
+
+    @abstractmethod
+    def add_task(self, title: str) -> Task:
+        """Add task."""
+
+
+class GoogleScriptSource(Source):
+    """Source from google scripts."""
+
+    def __init__(self, url: str) -> None:
+        """Save url."""
+        self._url = url
+
+    def fetch(self) -> list[Task]:
+        """Fetch tasks."""
+        res = requests.get(self._url, {"ged": "todoGet"}).text
+        return [Task(self, x) for x in res.split("\n")] if res else []
+
+    def remove_task(self, task: Task) -> None:
+        """Remove task."""
+        requests.get(self._url, {"ged": "taskRemo", "task": task.title})
+
+    def add_task(self, title: str) -> None:
+        """Remove task."""
+        requests.get(self._url, {"ged": "taskAdd", "task": title})
+        return Task(self, title)
