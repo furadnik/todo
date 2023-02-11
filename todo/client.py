@@ -12,7 +12,6 @@ class TodoList:
 
     def get_tasks(self) -> Iterable[Task]:
         """Get tasks on TODO list."""
-        print("how")
         return self._source.fetch()
 
     def find_task_by_title(self, title: str) -> Optional[Task]:
