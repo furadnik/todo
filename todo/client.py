@@ -38,5 +38,9 @@ class TodoList:
 
     def add_tasks(self, title_iter: Iterator[str], *args, **kwargs) -> Iterator[Task]:
         """Add tasks."""
+        return [self.add_task(title, *args, **kwargs) for title in title_iter]
+
+    def remove_tasks(self, title_iter: Iterator[str], *args, **kwargs) -> None:
+        """Add tasks."""
         for title in title_iter:
-            yield self.add_task(title, *args, **kwargs)
+            self.remove_task(title, *args, **kwargs)
