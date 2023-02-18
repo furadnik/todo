@@ -1,5 +1,5 @@
 """Main TODO list client."""
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Iterator
 from .sources import Source, Task
 
 
@@ -35,3 +35,8 @@ class TodoList:
                 raise Exception("Task already in TODO.")
         else:
             return self._source.add_task(title)
+
+    def add_tasks(self, title_iter: Iterator[str], *args, **kwargs) -> Iterator[Task]:
+        """Add tasks."""
+        for title in title_iter:
+            yield self.add_task(title, *args, **kwargs)
