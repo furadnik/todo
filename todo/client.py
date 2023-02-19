@@ -20,7 +20,7 @@ class TodoList:
             if x.title == title:
                 return x
 
-    def remove_task(self, title: str, fail: bool = True) -> None:
+    def remove_task(self, title: str, fail: bool = False) -> None:
         """Remove task."""
         task = self.find_task_by_title(title)
         if task is not None:
