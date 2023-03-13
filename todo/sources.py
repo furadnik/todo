@@ -17,6 +17,12 @@ class Task:
         """Remove self."""
         self._source.remove_task(self)
 
+    def __eq__(self, o) -> None:
+        """Equal compare."""
+        if isinstance(o, Task):
+            return self.title == o.title
+        return self.title == o
+
 
 class Source(ABC):
     """A source of TODOs."""

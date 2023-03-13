@@ -10,6 +10,14 @@ class TodoList:
         """Save source."""
         self._source = source
 
+    def __contains__(self, item) -> bool:
+        """Whether todo list contains item."""
+        return item in list(self.get_tasks())
+
+    def __iter__(self) -> Iterable[Task]:
+        """Return iterator of task."""
+        return self.get_tasks()
+
     def get_tasks(self) -> Iterable[Task]:
         """Get tasks on TODO list."""
         return self._source.fetch()
@@ -40,7 +48,10 @@ class TodoList:
         """Add tasks."""
         return [self.add_task(title, *args, **kwargs) for title in title_iter]
 
-    def remove_tasks(self, title_iter: Iterator[str], *args, **kwargs) -> None:
+    def remove_tasks(self, title_iter: Iterator[str | Task], *args, **kwargs) -> None:
         """Add tasks."""
-        for title in title_iter:
-            self.remove_task(title, *args, **kwargs)
+        for task in title_iter:
+            if isinstance(task, Task):
+                task.remove()
+            else:
+                self.remove_task(task, *args, **kwargs)
