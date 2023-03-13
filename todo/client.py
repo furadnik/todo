@@ -1,5 +1,5 @@
 """Main TODO list client."""
-from typing import Iterable, Optional, Iterator
+from typing import Iterable, Optional, Iterator, Union
 from .sources import Source, Task
 
 
@@ -14,7 +14,7 @@ class TodoList:
         """Whether todo list contains item."""
         return item in list(self.get_tasks())
 
-    def __iter__(self) -> Iterable[Task]:
+    def __iter__(self) -> Iterator[Task]:
         """Return iterator of task."""
         return self.get_tasks()
 
@@ -48,7 +48,7 @@ class TodoList:
         """Add tasks."""
         return [self.add_task(title, *args, **kwargs) for title in title_iter]
 
-    def remove_tasks(self, title_iter: Iterator[str | Task], *args, **kwargs) -> None:
+    def remove_tasks(self, title_iter: Iterator[Union[str, Task]], *args, **kwargs) -> None:
         """Add tasks."""
         for task in title_iter:
             if isinstance(task, Task):
