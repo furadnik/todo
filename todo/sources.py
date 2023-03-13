@@ -1,6 +1,7 @@
 """TODO sources."""
 from __future__ import annotations
 import requests
+from functools import partial
 from typing import Iterable
 from abc import ABC, abstractmethod
 
@@ -50,7 +51,7 @@ class GoogleScriptSource(Source):
     def fetch(self) -> list[Task]:
         """Fetch tasks."""
         res = requests.get(self._url, {"ged": "todoGet"}).text
-        return [Task(self, x) for x in res.split("\n")] if res else []
+        return map(partial(Task, self), res.split("\n") if res else [])
 
     def remove_task(self, task: Task) -> None:
         """Remove task."""
