@@ -14,6 +14,10 @@ class Task:
         self._source = source
         self.title = title
 
+    def __hash__(self) -> None:
+        """Hash task."""
+        return hash(self.title)
+
     def remove(self) -> None:
         """Remove self."""
         self._source.remove_task(self)
