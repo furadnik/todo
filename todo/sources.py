@@ -14,7 +14,7 @@ class Task:
         self._source = source
         self.title = title
 
-    def __hash__(self) -> None:
+    def __hash__(self) -> int:
         """Hash task."""
         return hash(self.title)
 
@@ -22,7 +22,7 @@ class Task:
         """Remove self."""
         self._source.remove_task(self)
 
-    def __eq__(self, o) -> None:
+    def __eq__(self, o) -> bool:
         """Equal compare."""
         if isinstance(o, Task):
             return self.title == o.title
@@ -52,7 +52,7 @@ class GoogleScriptSource(Source):
         """Save url."""
         self._url = url
 
-    def fetch(self) -> list[Task]:
+    def fetch(self) -> Iterable[Task]:
         """Fetch tasks."""
         res = requests.get(self._url, {"ged": "todoGet"}).text
         return map(partial(Task, self), res.split("\n") if res else [])
@@ -61,7 +61,7 @@ class GoogleScriptSource(Source):
         """Remove task."""
         requests.get(self._url, {"ged": "taskRemo", "task": task.title})
 
-    def add_task(self, title: str) -> None:
+    def add_task(self, title: str) -> Task:
         """Remove task."""
         requests.get(self._url, {"ged": "taskAdd", "task": title})
         return Task(self, title)
