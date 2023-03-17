@@ -16,7 +16,7 @@ class TodoList:
 
     def __iter__(self) -> Iterator[Task]:
         """Return iterator of task."""
-        return self.get_tasks()
+        return iter(self.get_tasks())
 
     def get_tasks(self) -> Iterable[Task]:
         """Get tasks on TODO list."""
@@ -27,6 +27,7 @@ class TodoList:
         for x in self.get_tasks():
             if x.title == title:
                 return x
+        return None
 
     def remove_task(self, title: str, fail: bool = False) -> None:
         """Remove task."""
@@ -38,13 +39,14 @@ class TodoList:
 
     def add_task(self, title: str, allow_duplicate: bool = False, fail: bool = False) -> Task:
         """Add a task."""
-        if not allow_duplicate and self.find_task_by_title(title) is not None:
+        if not allow_duplicate and (task := self.find_task_by_title(title)) is not None:
             if fail:
                 raise Exception("Task already in TODO.")
+            return task
         else:
             return self._source.add_task(title)
 
-    def add_tasks(self, title_iter: Iterator[str], *args, **kwargs) -> Iterator[Task]:
+    def add_tasks(self, title_iter: Iterator[str], *args, **kwargs) -> Iterable[Task]:
         """Add tasks."""
         return [self.add_task(title, *args, **kwargs) for title in title_iter]
 
