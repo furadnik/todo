@@ -1,5 +1,6 @@
 """Main TODO list client."""
-from typing import Iterable, Optional, Iterator, Union
+from typing import Iterable, Iterator, Optional, Union
+
 from .sources import Source, Task
 
 
@@ -22,16 +23,17 @@ class TodoList:
         """Get tasks on TODO list."""
         return self._source.fetch()
 
-    def find_task_by_title(self, title: str) -> Optional[Task]:
+    def find_task_by_title(self, title: str, case_sensitive: bool = False) -> Optional[Task]:
         """Return first found task, or None."""
+        ltitle = title.lower()
         for x in self.get_tasks():
-            if x.title == title:
+            if x.title == title or (not case_sensitive and x.title.lower() == ltitle):
                 return x
         return None
 
-    def remove_task(self, title: str, fail: bool = False) -> None:
+    def remove_task(self, title: str, case_sensitive: bool = False, fail: bool = False) -> None:
         """Remove task."""
-        task = self.find_task_by_title(title)
+        task = self.find_task_by_title(title, case_sensitive=case_sensitive)
         if task is not None:
             task.remove()
         elif fail:
