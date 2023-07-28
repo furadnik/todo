@@ -48,11 +48,11 @@ class TodoList:
         else:
             return self._source.add_task(title)
 
-    def add_tasks(self, title_iter: Iterator[str], *args, **kwargs) -> Iterable[Task]:
+    def add_tasks(self, title_iter: Iterable[str], *args, **kwargs) -> Iterable[Task]:
         """Add tasks."""
         return [self.add_task(title, *args, **kwargs) for title in title_iter]
 
-    def remove_tasks(self, title_iter: Iterator[Union[str, Task]], *args, **kwargs) -> None:
+    def remove_tasks(self, title_iter: Iterable[Union[str, Task]], *args, **kwargs) -> None:
         """Add tasks."""
         for task in title_iter:
             if isinstance(task, Task):
