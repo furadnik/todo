@@ -1,8 +1,8 @@
 """Script entry point for CLI usage."""
-from .client import TodoList
-from .config import get_source_from_config
 from argparse import ArgumentParser
 
+from .client import TodoList
+from .config import get_source_from_config
 
 source = get_source_from_config()
 todo = TodoList(source)
