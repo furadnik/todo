@@ -1,9 +1,11 @@
 """TODO sources."""
 from __future__ import annotations
-import requests
+
+from abc import ABC, abstractmethod
 from functools import partial
 from typing import Iterable
-from abc import ABC, abstractmethod
+
+import requests
 
 
 class Task:
@@ -64,4 +66,26 @@ class GoogleScriptSource(Source):
     def add_task(self, title: str) -> Task:
         """Remove task."""
         requests.get(self._url, {"ged": "taskAdd", "task": title})
+        return Task(self, title)
+
+
+class LocalSource(Source):
+    """Source storing tasks locally."""
+
+    def __init__(self, initial: list[str]) -> None:
+        """Save url."""
+        self.tasks = initial
+
+    def fetch(self) -> Iterable[Task]:
+        """Fetch tasks."""
+        return (Task(self, title) for title in self.tasks)
+
+    def remove_task(self, task: Task) -> None:
+        """Remove task."""
+        self.tasks.remove(task.title)
+
+    def add_task(self, title: str) -> Task:
+        """Remove task."""
+        if title not in self.tasks:
+            self.tasks.append(title)
         return Task(self, title)
