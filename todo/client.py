@@ -19,6 +19,10 @@ class TodoList:
         """Return iterator of task."""
         return iter(self.get_tasks())
 
+    def __len__(self) -> int:
+        """Get the number of tasks."""
+        return len(list(iter(self)))
+
     def get_tasks(self) -> Iterable[Task]:
         """Get tasks on TODO list."""
         return self._source.fetch()
