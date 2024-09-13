@@ -35,6 +35,13 @@ class TodoList:
                 return x
         return None
 
+    def find_tasks_by_tag(self, tag: str, case_sensitive: bool = False) -> Iterable[Task]:
+        """Return first found task, or None."""
+        ltag = tag.lower()
+        for x in self.get_tasks():
+            if tag in x.tags or (not case_sensitive and ltag in {y.lower() for y in x.tags}):
+                yield x
+
     def remove_task(self, title: str, case_sensitive: bool = False, fail: bool = False) -> None:
         """Remove task."""
         task = self.find_task_by_title(title, case_sensitive=case_sensitive)
@@ -43,7 +50,8 @@ class TodoList:
         elif fail:
             raise Exception("Task not on TODO list.")
 
-    def add_task(self, title: str, allow_duplicate: bool = False, fail: bool = False) -> Task:
+    def add_task(self, title: str, tags: list[str] | None = None, allow_duplicate: bool = False,
+                 fail: bool = False) -> Task:
         """Add a task."""
         if not allow_duplicate and (task := self.find_task_by_title(title)) is not None:
             if fail:

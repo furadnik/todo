@@ -44,7 +44,7 @@ class Source(ABC):
         """Remove task from todo."""
 
     @abstractmethod
-    def add_task(self, title: str) -> Task:
+    def add_task(self, title: str, tags: list[str] | None = None) -> Task:
         """Add task."""
 
 
@@ -64,7 +64,7 @@ class GoogleScriptSource(Source):
         """Remove task."""
         requests.get(self._url, {"ged": "taskRemo", "task": task.title})
 
-    def add_task(self, title: str) -> Task:
+    def add_task(self, title: str, tags: list[str] | None = None) -> Task:
         """Remove task."""
         requests.get(self._url, {"ged": "taskAdd", "task": title})
         return Task(self, title)
@@ -85,7 +85,7 @@ class LocalSource(Source):
         """Remove task."""
         self.tasks.remove(task.title)
 
-    def add_task(self, title: str) -> Task:
+    def add_task(self, title: str, tags: list[str] | None = None) -> Task:
         """Remove task."""
         if title not in self.tasks:
             self.tasks.append(title)
