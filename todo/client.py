@@ -64,6 +64,14 @@ class TodoList:
         else:
             return self._source.add_task(title, tags)
 
+    def import_task(self, task: Task, **kwargs) -> Task:
+        """Import a task."""
+        return self.add_task(task.title, tags=task.tags, **kwargs)
+
+    def import_tasks(self, tasks: Iterable[Task], **kwargs) -> Iterable[Task]:
+        """Import multiple tasks."""
+        return [self.import_task(task, **kwargs) for task in tasks]
+
     def add_tasks(self, title_iter: Iterable[str], *args, **kwargs) -> Iterable[Task]:
         """Add tasks."""
         return [self.add_task(title, *args, **kwargs) for title in title_iter]
