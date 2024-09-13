@@ -11,14 +11,15 @@ import requests
 class Task:
     """Task impl."""
 
-    def __init__(self, source: Source, title: str) -> None:
+    def __init__(self, source: Source, title: str, tags: list[str] | None = None) -> None:
         """Save task info."""
         self._source = source
         self.title = title
+        self.tags = tags or []
 
     def __hash__(self) -> int:
         """Hash task."""
-        return hash(self.title)
+        return hash(self.title + "!" + "#".join(self.tags))
 
     def remove(self) -> None:
         """Remove self."""
