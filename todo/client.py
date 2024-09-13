@@ -11,6 +11,10 @@ class TodoList:
         """Save source."""
         self._source = source
 
+    def __repr__(self) -> str:
+        """Return a representation of a todo list."""
+        return f"TodoList{{{', '.join(map(repr, self))}}}"
+
     def __contains__(self, item) -> bool:
         """Whether todo list contains item."""
         return item in list(self.get_tasks())
@@ -58,7 +62,7 @@ class TodoList:
                 raise Exception("Task already in TODO.")
             return task
         else:
-            return self._source.add_task(title)
+            return self._source.add_task(title, tags)
 
     def add_tasks(self, title_iter: Iterable[str], *args, **kwargs) -> Iterable[Task]:
         """Add tasks."""

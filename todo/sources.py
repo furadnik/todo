@@ -21,6 +21,10 @@ class Task:
         """Hash task."""
         return hash(self.title + "!" + "#".join(self.tags))
 
+    def __repr__(self) -> str:
+        """Get a representation of Task."""
+        return f"Task({self.title}, [{', '.join(self.tags)}])"
+
     def remove(self) -> None:
         """Remove self."""
         self._source.remove_task(self)
