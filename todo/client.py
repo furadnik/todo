@@ -1,7 +1,9 @@
 """Main TODO list client."""
+from __future__ import annotations
+
 from typing import Iterable, Iterator, Optional, Union
 
-from .sources import Source, Task
+from .sources import Source, TagSource, Task
 
 
 class TodoList:
@@ -83,3 +85,7 @@ class TodoList:
                 task.remove()
             else:
                 self.remove_task(task, *args, **kwargs)
+
+    def filter_tags(self, tags: list[str]) -> TodoList:
+        """Filter our tags."""
+        return TodoList(TagSource(self._source, tags))
