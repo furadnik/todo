@@ -1,7 +1,8 @@
-from todo.client import TodoList, Task
 from functools import partial
 from unittest import TestCase
 from unittest.mock import Mock
+
+from todo.client import Task, TodoList
 
 
 class TestTodoList(TestCase):
@@ -9,10 +10,10 @@ class TestTodoList(TestCase):
     def setUp(self):
         self.source = Mock()
         self.todo_list = TodoList(self.source)
-        self.source.fetch = lambda: map(partial(Task, self.todo_list), ["a", "b", "c"])
+        self.source.fetch = lambda: map(partial(Task, source=self.todo_list), ["a", "b", "c"])
 
     def test_iterator(self):
-        self.assertEqual(list(self.todo_list), ["a", "b", "c"])
+        self.assertEqual([x.title for x in self.todo_list], ["a", "b", "c"])
 
     def test_contains(self):
         self.assertTrue("a" in self.todo_list)
