@@ -32,7 +32,7 @@ class Task:
     def __eq__(self, o) -> bool:
         """Equal compare."""
         if isinstance(o, Task):
-            return self.title == o.title
+            return self.title == o.title and self.tags == o.tags
         return self.title == o
 
 
