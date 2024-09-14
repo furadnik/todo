@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Iterable
+from typing import Iterable, Self
 
 import requests
 
@@ -42,6 +42,11 @@ class Task:
     def as_dict(self) -> dict:
         """Return the dictionary representation of a task."""
         return {"title": self.title, "tags": self.tags}
+
+    @classmethod
+    def from_dict(cls, dic: dict, source: Source | None = None) -> Self:
+        """Get task from dict."""
+        return cls(**dic, source=source)
 
 
 class Source(ABC):
