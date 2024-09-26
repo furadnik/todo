@@ -59,7 +59,9 @@ class TodoList:
     def add_task(self, title: str, tags: list[str] | None = None, allow_duplicate: bool = False,
                  fail: bool = False) -> Task:
         """Add a task."""
-        if not allow_duplicate and (task := self.find_task_by_title(title)) is not None:
+        pre_task = Task(title, tags)
+        if not allow_duplicate and (
+                task := next((task for task in self.get_tasks() if task == pre_task), None)) is not None:
             if fail:
                 raise Exception("Task already in TODO.")
             return task
