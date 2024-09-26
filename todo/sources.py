@@ -126,7 +126,7 @@ class TagSource(Source):
                 continue
             task_dict = task.as_dict()
             task_dict["tags"] = [x for x in task_dict["tags"] if x not in self._tags]
-            yield Task(**task_dict, source=self._source)
+            yield Task(**task_dict, source=self)
 
     def remove_task(self, task: Task) -> None:
         """Remove task from todo."""
